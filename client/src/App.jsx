@@ -21,7 +21,7 @@ function PrivateRoutes({ allowedUsers }) {
   // If there's no user, redirect to login
    // If user is not logged in (user is null), redirect to the login page
    if (user === null) {
-    console.log("User is not logged in, redirecting to login.");
+    console.log("User is not logged in, redirecting to login!.");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
