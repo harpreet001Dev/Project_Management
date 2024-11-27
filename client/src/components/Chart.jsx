@@ -34,7 +34,7 @@ const Chart = () => {
             left: 20,
           }}
         >
-          <CartesianGrid stroke="#f5f5f5" />
+        
           <XAxis dataKey="name" scale="band" />
           <YAxis />
           <Tooltip />
