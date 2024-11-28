@@ -40,7 +40,7 @@ const Chart = () => {
           <Tooltip />
           <Legend />
           <Bar dataKey="uv" barSize={20} fill="#413ea0" />
-          <Line type="monotone" dataKey="uv" stroke="#ff7300" />
+          <Line type="monotone" dataKey="uv" stroke="#ff7300"/>
         </ComposedChart>
       </ResponsiveContainer>
     </div>
