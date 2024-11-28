@@ -9,11 +9,8 @@ const dbconnection =async()=>{
         const uri= process.env.MONGO_URI; //28-11 by amreek
         await mongoose.connect(uri);
         console.log("Connection to database is sucessfull!");
-        
-        
     } catch (error) {
         console.log("Connection error",error);
-        
     }
 }
 
