@@ -1,9 +1,8 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const userRouters = require('./routes/userRoutes');
+const dbconnection = require('./config/db'); //connection required
 
 const app =express();
 app.use(cookieParser());
@@ -20,18 +19,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-const dbconnection =async()=>{
-    try {
-        const uri= process.env.MONGO_URI; //28-11 by amreek
-        await mongoose.connect(uri);
-        console.log("Connection to database is sucessfull!");
-        
-        
-    } catch (error) {
-        console.log("Connection error",error);
-        
-    }
-}
+//database connection
 dbconnection();
 
 
