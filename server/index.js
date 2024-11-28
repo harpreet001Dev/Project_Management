@@ -10,6 +10,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+require('dotenv').config(); //28-11 by amreek
+
 const corsOptions = {
     origin: 'http://localhost:5173',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -20,7 +22,7 @@ app.use(cors(corsOptions));
 
 const dbconnection =async()=>{
     try {
-        const uri='mongodb+srv://harpreet13108159:Harpreet%409016@cluster0.ckrpr.mongodb.net/newdb';;
+        const uri= process.env.MONGO_URI; //28-11 by amreek
         await mongoose.connect(uri);
         console.log("Connection to database is sucessfull!");
         

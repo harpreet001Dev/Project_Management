@@ -1,7 +1,10 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel')
 
-const secret_key ='lksdflbsgdhfdlknl233';
+//dotenv file included 28-11-24
+require('dotenv').config();
+
+const secret_key =process.env.secret_key;
 
 
 
