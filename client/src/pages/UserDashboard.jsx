@@ -59,7 +59,7 @@ const UserDashboard = () => {
           <Chart />
         </div>
         <div className='w-1/3 bg-[#202020] p-5 h-[398px] overflow-auto'>
-          <h3 className='text-white'>Important Projects</h3>
+          <h3 className='text-white font-extrabold'>Important Projects</h3>
           <div>
             <table className='w-full text-white  text-left border-gray-600 mt-3'>
               <thead>
@@ -71,7 +71,15 @@ const UserDashboard = () => {
               <tbody>
                 {importantProjects.map((project, index) => (
                   <tr key={index} className='border-b border-gray-600 space-y-2'>
-                    <td className='px-4 py-2'>{project.name}</td>
+                    <td className='px-4 py-2 flex'>
+                      <div className={clsx(
+                        'rounded-full p-2 w-10 h-10 flex items-center justify-center',
+                        priorityClasses[project.priority]
+                      )}>
+                        {project.name[0]}
+                      </div>
+                      <p className='ml-2'> {project.name}</p>
+                    </td>
                     <td>
                       <p className={clsx(
                         'py-0.5  text-center rounded-full text-sm',
@@ -86,9 +94,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
-      <div>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nemo officia sit non nihil veniam soluta modi sapiente tempore? Tempore perferendis quaerat inventore nemo eaque explicabo sed amet. Illo, dolores quae.</p>
-      </div>
+      
     </>
 
   )
