@@ -12,7 +12,7 @@ import Navbar from './components/Navbar';
 
 function PrivateRoutes({ allowedUsers }) {
   const user = useSelector((state) => state.auth.user);
-  console.log(user,"user");
+  // console.log(user,"user");
   
   const location = useLocation();
 
@@ -21,13 +21,13 @@ function PrivateRoutes({ allowedUsers }) {
   // If there's no user, redirect to login
    // If user is not logged in (user is null), redirect to the login page
    if (user === null) {
-    console.log("User is not logged in, redirecting to login!.");
+    // console.log("User is not logged in, redirecting to login!.");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
 
   if (!allowedUsers.includes(user.role)) {  // Use user.role, not user.user.role
-    console.log("User not authorized. Redirecting to /notauth.");
+    // console.log("User not authorized. Redirecting to /notauth.");
     return <Navigate to="/notauth" state={{ from: location }} replace />;
   }
 

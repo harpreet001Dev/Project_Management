@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const Project = require('../models/ProjectModel');
 
 //dotenv file included 28-11-24
 require('dotenv').config();
@@ -47,9 +48,9 @@ const LoginSchema = Joi.object({
     password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
 }).unknown();  // Allows any additional properties (like "name")
 
-exports.login = async (req, res) => {
-    console.log("coming");
 
+
+exports.login = async (req, res) => {
     const { error, value } = LoginSchema.validate(req.body);
     if (error) {
         console.log("Validation error:", error.details[0].message);
@@ -79,3 +80,77 @@ exports.login = async (req, res) => {
         res.status(400).json({ message: "Login failed!" })
     }
 }
+
+// Getting users except admin 
+exports.getUsers=async(req,res)=>{    
+    try {
+        const users = await User.find({role:{$ne:'admin'}}).select('name');
+        res.status(200).json(users);
+        
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching users', error });
+    }
+    
+}
+
+
+
+const projectSchema = Joi.object({
+  project: Joi.string().required(),
+  owner: Joi.string().required(),
+  startdate: Joi.date().required(),
+  enddate: Joi.date().required(),
+  priority: Joi.string().valid('Low', 'Medium', 'High').required(),
+  description: Joi.string().required(),
+  members: Joi.array().items(Joi.object({
+    _id: Joi.string().required(),
+    name: Joi.string().required(),
+  })).required()
+});
+
+exports.AddProject = async (req, res) => {
+  // Validate the incoming request body
+  const { error } = projectSchema.validate(req.body);
+
+  if (error) {    
+    return res.status(400).json({ message: error.details[0].message });
+  }
+
+
+  // Destructure the required fields from the validated body
+  const { project, owner, startdate, enddate, priority, description, members } = req.body;
+
+  try {
+    // Create a new project using the validated data
+    const newProject = new Project({
+      project,
+      owner,
+      startdate,  // Ensure this is a valid Date type
+      enddate,    // Ensure this is a valid Date type
+      priority,
+      description,
+      members
+    });
+
+
+    // Save the new project to the database
+    await newProject.save();
+    console.log("new project is created");
+    const io = req.app.get('socketio');
+    members.forEach((member) => {
+      io.to(member._id).emit('task-created', {
+        message: `A new project "${project}" has been assigned to you.`,
+        projectId: newProject._id,
+      });
+    });
+
+    // Respond with success
+    res.status(201).json({ message: "Project added successfully", project: newProject });
+
+  } catch (error) {
+    // Handle any errors during project creation
+    console.error("Error creating project:", error);
+    res.status(500).json({ message: 'Error creating project', error: error.message });
+  }
+};
+
